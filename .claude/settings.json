@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node -v)",
+      "PowerShell(npm -v)",
+      "PowerShell(npx next typegen 2>&1)",
+      "PowerShell(npm run type-check 2>&1)"
+    ]
+  }
+}

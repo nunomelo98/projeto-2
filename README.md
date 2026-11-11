@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# projeto-2
 
-## Getting Started
+Projeto base em **Next.js 16** (App Router) com **TypeScript** e **TailwindCSS 4**, criado com `create-next-app`.
 
-First, run the development server:
+## Tech Stack
+
+| Camada | Tecnologia |
+| --- | --- |
+| Framework | Next.js 16.4 (App Router, Turbopack) |
+| UI | React 19.3, TailwindCSS 4 |
+| Linguagem | TypeScript 5 |
+| Lint | ESLint 9 + `eslint-config-next` |
+
+Convenções do projeto (documentadas em [CLAUDE.md](CLAUDE.md)): Server Components por padrão, mutações via Server Actions, shadcn/ui para primitivos, React Hook Form + Zod para validação. Essas bibliotecas ainda **não** estão instaladas.
+
+## Pré-requisitos
+
+- Node.js 20 ou superior
+- npm
+
+## Começando
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000). A página inicial está em `app/page.tsx` e atualiza automaticamente ao salvar.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Servidor de desenvolvimento (porta 3000) |
+| `npm run build` | Build de produção |
+| `npm run start` | Executa o build de produção |
+| `npm run lint` | Executa o ESLint |
+| `npm run type-check` | Verifica tipos com `tsc --noEmit` |
 
-## Learn More
+Após uma série de mudanças, rode `npm run type-check && npm run lint`.
 
-To learn more about Next.js, take a look at the following resources:
+## Estrutura de pastas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+app/              Rotas, layouts e estilos globais (App Router)
+actions/          Server Actions (mutações)
+components/       Componentes de feature
+components/ui/    Primitivos reutilizáveis (shadcn/ui)
+lib/              Helpers, clients e configurações
+types/            Tipos globais e schemas Zod compartilhados
+public/           Arquivos estáticos
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Alias de import: `@/*` aponta para a raiz do projeto (sem pasta `src/`).
 
-## Deploy on Vercel
+## Configuração
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`next.config.ts` habilita `cacheComponents` e `partialPrefetching`, e registra o loader `@tailwindcss/turbopack` para arquivos `.css`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Variáveis de ambiente: copie `.env.example` para `.env.local` (quando existir). Use `NEXT_PUBLIC_*` apenas para valores seguros no client; segredos ficam em Server Actions ou Route Handlers.
+
+## Observações
+
+- Os tipos de rota (`LayoutProps`, `PageProps`) são gerados pelo Next. Se o `type-check` reclamar deles, rode `npx next typegen` ou `npm run dev`.
+- Esta versão do Next.js tem mudanças de API em relação às anteriores. Consulte a documentação local em `node_modules/next/dist/docs/` antes de escrever código (veja [AGENTS.md](AGENTS.md)).
+
+## Branches e commits
+
+- Branches: `feat/`, `fix/`, `chore/` + descrição em kebab-case
+- Commits em inglês, no imperativo: `add OAuth callback handler`
